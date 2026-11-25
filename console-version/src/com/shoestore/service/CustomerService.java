@@ -1,19 +1,21 @@
 package com.shoestore.service;
 
 import java.util.ArrayList;
+
 import com.shoestore.model.Customer;
-import com.shoestore.service.CustomerService;
 
 public class CustomerService {
 
     private ArrayList<Customer> customers = new ArrayList<>();
 
     public boolean isEmailExists(String email) {
-    	if (email == null) {
+
+        if (email == null) {
             return false;
         }
 
         for (Customer customer : customers) {
+
             if (customer != null && email.equalsIgnoreCase(customer.getEmail())) {
                 return true;
             }
@@ -21,8 +23,9 @@ public class CustomerService {
 
         return false;
     }
-    
+
     public boolean registerCustomer(Customer customer) {
+
         if (customer == null) {
             return false;
         }
@@ -30,7 +33,7 @@ public class CustomerService {
         if (customer.getEmail() == null || customer.getEmail().isBlank()) {
             return false;
         }
-        
+
         if (isEmailExists(customer.getEmail())) {
             return false;
         }
@@ -38,9 +41,9 @@ public class CustomerService {
         customers.add(customer);
 
         return true;
-        
     }
-    
-    
 
+    public ArrayList<Customer> getAllCustomers() {
+        return customers;
+    }
 }
