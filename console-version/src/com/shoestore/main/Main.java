@@ -1,6 +1,7 @@
 package com.shoestore.main;
 
 import java.util.ArrayList;
+import com.shoestore.service.ProductService;
 import com.shoestore.model.Product;
 
 import com.shoestore.model.Admin;
@@ -75,14 +76,16 @@ public class Main {
         Product p1 = new Product(101, "Air Max", "Nike", 5999.0, "Running");
         Product p2 = new Product(102, "Ultraboost", "Adidas", 7999.0, "Casual");
 
-        ArrayList<Product> products = new ArrayList<>();
+        ProductService productService = new ProductService();
 
-        products.add(p1);
-        products.add(p2);
+        productService.addProduct(p1);
+        productService.addProduct(p2);
 
-        System.out.println("Total products: " + products.size());
+        ArrayList<Product> productList = productService.getAllProducts();
 
-        for (Product product : products) {
+        System.out.println("Total products: " + productList.size());
+
+        for (Product product : productList) {
 
             System.out.println("Product ID: " + product.getProductId());
             System.out.println("Name: " + product.getName());
@@ -90,6 +93,7 @@ public class Main {
             System.out.println("Price: " + product.getPrice());
             System.out.println("Category: " + product.getCategory());
             System.out.println("----------------------");
+        
         }
     }
 }
