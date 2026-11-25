@@ -44,6 +44,6 @@ public class CustomerService {
     }
 
     public ArrayList<Customer> getAllCustomers() {
-        return customers;
+        return new ArrayList<>(customers);
     }
 }
