@@ -8,7 +8,8 @@ import com.shoestore.model.Admin;
 import com.shoestore.model.Customer;
 import com.shoestore.model.User;
 import com.shoestore.service.CustomerService;
-
+import com.shoestore.service.ShoppingCart;
+import com.shoestore.model.CartItem;
 public class Main {
 
     public static void main(String[] args) {
@@ -76,6 +77,8 @@ public class Main {
         Product p1 = new Product(101, "Air Max", "Nike", 5999.0, "Running");
         Product p2 = new Product(102, "Ultraboost", "Adidas", 7999.0, "Casual");
 
+     // DAY 6 - PRODUCT SERVICE
+        System.out.println("\n========== DAY 6: PRODUCT SERVICE ==========");
         ProductService productService = new ProductService();
 
         productService.addProduct(p1);
@@ -93,7 +96,70 @@ public class Main {
             System.out.println("Price: " + product.getPrice());
             System.out.println("Category: " + product.getCategory());
             System.out.println("----------------------");
-        
+       // DAY 7 - DUPLICATE PRODUCT ID TEST
+        System.out.println("\n========== DAY 7: DUPLICATE PRODUCT ID TEST ==========");
+
+        Product p3 = new Product(101, "Jordan", "Nike", 8999.0, "Casual");
+
+        productService.addProduct(p3);
+
+        System.out.println("Total products after duplicate attempt: " 
+                + productService.getAllProducts().size());
         }
+        Product foundProduct = productService.getProductById(999);
+        if (foundProduct != null) {
+            System.out.println("Product Found!");
+            System.out.println("Name: " + foundProduct.getName());
+            System.out.println("Brand: " + foundProduct.getBrand());
+            System.out.println("Price: " + foundProduct.getPrice());
+        } else {
+            System.out.println("Product not found!");
+        }
+        
+        ArrayList<Product> searchResults = productService.searchProductsByName("Puma");
+        if (searchResults.isEmpty()) {
+            System.out.println("No products found!");
+        } else {
+            for (Product product : searchResults) {
+                System.out.println("Product Name: " + product.getName());
+                System.out.println("Brand: " + product.getBrand());
+                System.out.println("Price: " + product.getPrice());
+                System.out.println("----------------------");
+            }
+        }
+        
+     // DAY 7 - SHOPPING CART TEST
+
+        ShoppingCart cart = new ShoppingCart();
+
+        cart.addToCart(p1, 2);
+        cart.addToCart(p1, 1);
+        cart.addToCart(p2, 1);
+
+        System.out.println("\n========== SHOPPING CART ==========");
+
+        for (CartItem item : cart.getCartItems()) {
+
+            System.out.println("Product: " + item.getProduct().getName());
+            System.out.println("Quantity: " + item.getQuantity());
+            System.out.println("Subtotal: " + item.getSubtotal());
+            System.out.println("------------------------");
+        }
+        cart.increaseQuantity(101);
+        cart.increaseQuantity(999);
+        cart.decreaseQuantity(101);
+        cart.decreaseQuantity(101);
+        cart.decreaseQuantity(101);
+        cart.decreaseQuantity(999);
+        cart.decreaseQuantity(101);
+        cart.removeFromCart(101);
+        cart.removeFromCart(999);
+        System.out.println("Grand Total: " + cart.getCartTotal());
+        System.out.println("Is cart empty? " + cart.isEmpty());
+
+        cart.removeFromCart(102);
+
+        System.out.println("Is cart empty? " + cart.isEmpty());
     }
+        
 }
