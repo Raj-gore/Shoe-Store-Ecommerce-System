@@ -6,8 +6,10 @@ import com.shoestore.model.Product;
 
 import com.shoestore.model.Admin;
 import com.shoestore.model.Customer;
+import com.shoestore.model.Order;
 import com.shoestore.model.User;
 import com.shoestore.service.CustomerService;
+import com.shoestore.service.OrderService;
 import com.shoestore.service.ShoppingCart;
 import com.shoestore.model.CartItem;
 public class Main {
@@ -43,7 +45,6 @@ public class Main {
     // DAY 3 - CUSTOMER REGISTRATION
         System.out.println("\n========== DAY 3: CUSTOMER REGISTRATION ==========");
 
-        // Create CustomerService object only once
         CustomerService customerService = new CustomerService();
 
         Customer c1 = new Customer(101, "Mangesh", "mangesh@gmail.com", "9876543210");
@@ -96,16 +97,16 @@ public class Main {
             System.out.println("Price: " + product.getPrice());
             System.out.println("Category: " + product.getCategory());
             System.out.println("----------------------");
-       // DAY 7 - DUPLICATE PRODUCT ID TEST
+
+        } 
+            
+     // DAY 7 - DUPLICATE PRODUCT ID TEST
         System.out.println("\n========== DAY 7: DUPLICATE PRODUCT ID TEST ==========");
-
         Product p3 = new Product(101, "Jordan", "Nike", 8999.0, "Casual");
-
         productService.addProduct(p3);
-
-        System.out.println("Total products after duplicate attempt: " 
+        System.out.println("Total products after duplicate attempt: "
                 + productService.getAllProducts().size());
-        }
+
         Product foundProduct = productService.getProductById(999);
         if (foundProduct != null) {
             System.out.println("Product Found!");
@@ -160,6 +161,52 @@ public class Main {
         cart.removeFromCart(102);
 
         System.out.println("Is cart empty? " + cart.isEmpty());
+        
+     // DAY 8 - ORDER PLACEMENT TEST
+        System.out.println("\n========== DAY 8: ORDER PLACEMENT ==========");
+
+        cart.addToCart(p1, 2);
+        cart.addToCart(p2, 1);
+
+        OrderService orderService = new OrderService();
+
+        orderService.placeOrder(501, 102, cart);
+        System.out.println("\n========== DUPLICATE ORDER ID TEST ==========");
+
+        cart.addToCart(p1, 1);
+        orderService.placeOrder(501, 102, cart);
+
+        System.out.println("Is cart empty? " + cart.isEmpty());
+        System.out.println("\n========== EMPTY CART ORDER TEST ==========");
+
+        cart.removeFromCart(101);
+
+        orderService.placeOrder(502, 102, cart);
+        
+        System.out.println("\n========== INVALID ID TEST ==========");
+
+        cart.addToCart(p1, 1);
+        // Invalid Order ID
+        orderService.placeOrder(0, 102, cart);
+
+        // Invalid Customer ID
+        orderService.placeOrder(503, -1, cart);
+
+        System.out.println("Is cart empty? " + cart.isEmpty());
+        System.out.println("\n========== ORDER RETRIEVAL TEST ==========");
+
+        Order savedOrder = orderService.getOrderById(501);
+
+        if (savedOrder != null) {
+            System.out.println("Order found!");
+            System.out.println("Order ID: " + savedOrder.getOrderId());
+            System.out.println("Customer ID: " + savedOrder.getCustomerId());
+            System.out.println("Order Total: " + savedOrder.getOrderTotal());
+        } else {
+            System.out.println("Order not found!");
+        }
+
+        System.out.println("Total saved orders: " + orderService.getAllOrders().size());
     }
         
 }

@@ -82,6 +82,11 @@ public class ShoppingCart {
     public boolean isEmpty() {
         return cartItems.isEmpty();
     }
+    
+    public void clearCart() {
+        cartItems.clear();
+        System.out.println("Cart cleared successfully!");
+    }
 }
 
 
